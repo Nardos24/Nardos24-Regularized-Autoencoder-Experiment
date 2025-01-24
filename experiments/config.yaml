@@ -1,0 +1,27 @@
+# Device configuration
+device: "cpu"  
+# Model parameters
+latent_dim: 20  
+lambda_reg: 0.00001
+std: 0.1
+# Training parameters
+batch_size: 200  
+learning_rate: 0.1 
+epochs: 50  
+
+# File paths
+model_path: "models/rae_model.pth"  
+log_dir: "logs/"  
+
+# Dataset paths
+trainX: "data/trainX.npy"  
+trainY: "data/trainY.npy"  
+validX: "data/validX.npy"  
+validY: "data/validY.npy"  
+testX: "data/testX.npy"  
+testY: "data/testY.npy" 
+
+# Evaluation parameters
+n_gmm_components: 75  
+n_mc_samples: 5000  
+chunk_size: 1000  
