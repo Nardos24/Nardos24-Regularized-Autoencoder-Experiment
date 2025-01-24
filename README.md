@@ -44,8 +44,8 @@ The key contributions of this implementation include:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/rae-experiment.git
-   cd rae-experiment
+   git clone https://github.com/Nardos24/Regularized-Autoencoder-Experiment
+   cd Regularized-Autoencoder-Experiment
    ```
 
 2. Install dependencies:
@@ -74,7 +74,7 @@ device: "cpu"  # Set to "cuda" for GPU
 
 # Model parameters
 latent_dim: 20  # Latent space dimensionality
-lambda_reg: 0.00005  # L2 regularization coefficient
+lambda_reg: 0.00001  # L2 regularization coefficient
 init_std: 0.1  # Standard deviation for weight initialization
 
 # Training parameters
@@ -134,29 +134,19 @@ The results may vary slightly depending on the training process, but according t
 | Classification Error          | ~11%                  |
 | Marginal Log-Likelihood       | ~-117.01 ± 0.18       |
 
-## File Structure
+Our experiment results were as follows:
 
-```
-experiments/
-├── data/                 # Dataset files (.npy)
-├── models/               # Trained model weights
-├── logs/                 # Training logs
-├── src/                  # Source code
-│   ├── data_loader.py    # Data loading utilities
-│   ├── model.py          # RAE model definition
-│   ├── train.py          # Training script
-│   ├── evaluate.py       # Evaluation script
-│   ├── utils.py          # Helper functions (BCE, M-MSE, GMM, etc.)
-│   └── main.py           # Main entry point
-├── experiments/          # Experiment configurations
-│   └── config.yaml       # Configuration file
-└── README.md             # This README file
-```
+| Metric                       | Observed Value         |
+|------------------------------|------------------------|
+| Validation Loss (BCE)        | 80.1370               |
+| Test Loss (BCE)              | 79.5107               |
+| Classification Error          | 11.15%               |
+| Pattern Completion (M-MSE)   | 18.22                 |
+| Marginal Log-Likelihood       | -387.5964             |
+
 
 ## References
 
 If you find this repository useful, please consider citing the original paper:
 
-- [Paper Title](link-to-paper)
-
-For any questions or issues, feel free to open an issue in the repository!
+- [Synaptic Learning as Error-Correction in Biological and Artificial Neural Networks](https://www.nature.com/articles/s41467-022-29632-7)
