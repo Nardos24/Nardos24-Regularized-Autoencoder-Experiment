@@ -130,7 +130,7 @@ The results may vary slightly depending on the training process, but according t
 | Metric                       | Expected Value         |
 |------------------------------|------------------------|
 | Reconstruction Loss (BCE)    | ~60                   |
-| Pattern Completion (M-MSE)   | ~11.99 ± 0.47         |
+| Pattern Completion (M-MSE)   | ~22.99 ± 0.47         |
 | Classification Error          | ~11%                  |
 | Marginal Log-Likelihood       | ~-117.01 ± 0.18       |
 
