@@ -34,7 +34,7 @@ def extract_latent_representations(model, dataloader, device):
     return np.vstack(latents)
 
 
-def monte_carlo_log_likelihood(gmm, model, dataloader, n_samples=5000, batch_size=1000):
+def monte_carlo_log_likelihood(gmm, model, dataloader, n_samples=5000, batch_size=2000):
     model.eval()
     device = next(model.parameters()).device
 
@@ -139,7 +139,53 @@ def evaluate_reconstruction(model, dataloader):
 
     return total_loss / len(dataloader.dataset)  # Average over dataset size
 
-def evaluate_classification(model, loader):
+def evaluate_classification(model, train_loader, test_loader):
+    model.eval()
+    train_latents, train_labels = [], []
+    test_latents, test_labels = [], []
+
+    with torch.no_grad():
+        # Extract latents for training data
+        for data, labels in train_loader:
+            data = data.view(data.size(0), -1)
+            z = model.encoder(data).cpu().numpy()
+            train_latents.append(z)
+
+            # Convert one-hot to class indices
+            train_labels.append(np.argmax(labels.cpu().numpy(), axis=1))
+
+        # Extract latents for test data
+        for data, labels in test_loader:
+            data = data.view(data.size(0), -1)
+            z = model.encoder(data).cpu().numpy()
+            test_latents.append(z)
+
+            # Convert one-hot to class indices
+            test_labels.append(np.argmax(labels.cpu().numpy(), axis=1))
+
+    # Convert lists to numpy arrays
+    train_latents = np.vstack(train_latents)
+    train_labels = np.hstack(train_labels)  # Now this should be a 1D array
+    test_latents = np.vstack(test_latents)
+    test_labels = np.hstack(test_labels)  # Now this should be a 1D array
+
+    # Debugging shapes
+    print(f"Final Train Latents Shape: {train_latents.shape}")
+    print(f"Final Train Labels Shape: {train_labels.shape}")
+
+    # Train Logistic Regression Classifier
+    clf = LogisticRegression(max_iter=1000)
+    clf.fit(train_latents, train_labels)
+
+    # Predict on test latent space
+    predictions = clf.predict(test_latents)
+
+    # Compute Classification Error
+    classification_error = 100 * (1 - accuracy_score(test_labels, predictions))
+
+    return classification_error
+
+#def evaluate_classification(model, loader):
     """
     Evaluate classification error using the trained RAE model and a logistic regression classifier.
 
